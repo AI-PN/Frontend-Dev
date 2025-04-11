@@ -2,6 +2,12 @@
 // app/layout.js 
 // These styles apply to every route in the application
 import './globals.css'
+import { Poppins } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+});
 export const metadata = {
   title: "HealthCare AI",
   description: "Your Health, Your Control",
@@ -9,11 +15,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        {/* Global Layout - could add a Navbar here if you want */}
-        {children}
-      </body>
+    <html lang="en" className={poppins.className}>
+      <head />
+      <body>{children}</body>
     </html>
   );
 }

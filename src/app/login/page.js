@@ -1,79 +1,151 @@
+// app/login/page.js
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
+import { signIn } from "next-auth/react"; // Ensure you have NextAuth installed and configured
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic
-    alert(`Logging in with ${email} / ${password}`);
+    // Implement your login authentication logic here,
+    // e.g., calling your own API or using NextAuth credentials signIn.
+    console.log({ email, password, rememberMe });
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen px-4">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold mb-6">Welcome Back</h1>
-        <p className="text-gray-500 mb-8">Login to access your health dashboard</p>
+    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+        {/* Logo */}
+        <div className="flex items-center justify-center mb-6">
+          <Image 
+            src="/Vector.svg"  // Adjust path if your file is in a subfolder (e.g., "/images/Vector.svg")
+            alt="Logo"
+            width={36}
+            height={36}
+          />
+        </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+        {/* Heading */}
+        <h2 className="text-2xl font-semibold text-center mb-1">Welcome back</h2>
+        <p className="text-sm text-gray-500 text-center mb-6">
+          Please sign in to your account
+        </p>
+
+        {/* Login Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email Input */}
           <div>
-            <label className="block mb-1 text-sm font-medium">Email</label>
-            <input
-              type="email"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="jp"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <label
+              htmlFor="email"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              Email address
+            </label>
+            <div className="flex items-center border border-gray-300 rounded-lg">
+              <div className="pl-3">
+                <Image 
+                  src="/email.svg"  // Adjust the path if needed (e.g., "/images/email.svg")
+                  alt="Email Icon"
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 focus:outline-none focus:ring-0 focus:ring-blue-0"
+                required
+              />
+            </div>
           </div>
 
+          {/* Password Input */}
           <div>
-            <label className="block mb-1 text-sm font-medium">Password</label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-              placeholder="********"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <label
+              htmlFor="password"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              Password
+            </label>
+            <div className="flex items-center border border-gray-300 rounded-lg">
+              <div className="pl-3">
+                <Image 
+                  src="/password.svg"  // Adjust the path if needed (e.g., "/images/password.svg")
+                  alt="Password Icon"
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full px-3 py-2 focus:outline-none focus:ring-0 focus:ring-blue-0"
+                required
+              />
+            </div>
           </div>
 
+          {/* Remember Me and Forgot Password */}
+          <div className="flex items-center justify-between">
+            <label className="flex items-center text-sm text-gray-600">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={() => setRememberMe(!rememberMe)}
+                className="mr-1"
+              />
+              Remember me
+            </label>
+            <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+              Forgot password?
+            </Link>
+          </div>
+
+          {/* Sign In Button */}
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700 transition"
+            className="w-full py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700"
           >
-            Sign In
+            Sign in
           </button>
-        </form>
 
-        <div className="flex items-center my-4">
-          <hr className="flex-grow border-t border-gray-300" />
-          <span className="px-2 text-gray-400">OR</span>
-          <hr className="flex-grow border-t border-gray-300" />
-        </div>
-
-        <div className="flex space-x-2">
-          <button className="flex-1 py-2 border border-gray-300 rounded hover:bg-gray-100 transition">
+          {/* Sign in with Google Button */}
+          <button
+            type="button"
+            onClick={() => signIn("google")}
+            className="w-full py-2 border border-gray-300 rounded-lg flex items-center justify-center hover:bg-gray-50"
+          >
+            <Image 
+              src="/google.svg"     // Update the path if necessary (e.g., "/images/google.svg")
+              alt="Google Icon"
+              width={20}             // Adjust size as needed
+              height={20}
+              className="mr-2"
+            />
             Sign in with Google
           </button>
-          <button className="flex-1 py-2 border border-gray-300 rounded hover:bg-gray-100 transition">
-            Sign in with Apple
-          </button>
-        </div>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
-          Don’t have an account?{" "}
-          <Link href="/register" className="text-blue-600 hover:underline">
-            Sign up
-          </Link>
-        </p>
+          {/* Sign Up Link */}
+          <p className="text-center text-sm text-gray-500">
+            Don&apos;t have an account?{" "}
+            <Link href="/register" className="text-blue-600 hover:underline font-medium">
+              Sign up
+            </Link>
+          </p>
+        </form>
       </div>
-    </main>
+    </div>
   );
 }
